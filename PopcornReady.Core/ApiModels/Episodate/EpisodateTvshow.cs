@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace PopcornReady.Razor.ApiModels.Episodate
+namespace PopcornReady.Core.ApiModels.Episodate
 {
     public class EpisodateTvshow
     {

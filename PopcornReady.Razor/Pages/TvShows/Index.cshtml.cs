@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using PopcornReady.Razor.Entities;
-using PopcornReady.Razor.Services;
+using PopcornReady.Core.Data.Entities;
+using PopcornReady.Core.Services;
 
 namespace PopcornReady.Razor.Pages.TvShows
 {

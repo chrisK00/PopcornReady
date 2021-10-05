@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PopcornReady.Razor.Entities
+namespace PopcornReady.Core.Data.Entities
 {
     public class TvShow
     {

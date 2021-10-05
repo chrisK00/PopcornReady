@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PopcornReady.Razor.ApiServices;
-using PopcornReady.Razor.Data;
-using PopcornReady.Razor.Services;
+using PopcornReady.Core.ApiServices;
+using PopcornReady.Core.Data;
+using PopcornReady.Core.Services;
 
-namespace PopcornReady.Razor.Extensions
+namespace PopcornReady.Core.Extensions
 {
     public static class ServicesExtensions
     {
@@ -15,6 +15,8 @@ namespace PopcornReady.Razor.Extensions
 
             services.AddScoped<ITvShowsApiService, EpisodateApiService>();
             services.AddScoped<ITvShowsService, TvShowsService>();
+
+            services.AddHttpClients();
         }
 
         public static void AddHttpClients(this IServiceCollection services)

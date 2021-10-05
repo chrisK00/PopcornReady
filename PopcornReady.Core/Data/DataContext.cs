@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using PopcornReady.Razor.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PopcornReady.Core.Data.Entities;
 
-namespace PopcornReady.Razor.Data
+namespace PopcornReady.Core.Data
 {
     public class DataContext : DbContext
     {

@@ -1,21 +1,18 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using PopcornReady.Razor.ApiServices;
-using PopcornReady.Razor.Entities;
-using PopcornReady.Razor.Services;
+using PopcornReady.Core.Data.Entities;
+using PopcornReady.Core.Services;
 
 namespace PopcornReady.Razor.Pages.TvShows
 {
     public class AddModel : PageModel
     {
-        private readonly ITvShowsApiService _tvSeriesApiService;
         private readonly ITvShowsService _tvShowsService;
 
-        public AddModel(ITvShowsService tvShowsService, ITvShowsApiService tvSeriesApiService)
+        public AddModel(ITvShowsService tvShowsService)
         {
             _tvShowsService = tvShowsService;
-            _tvSeriesApiService = tvSeriesApiService;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -26,14 +23,9 @@ namespace PopcornReady.Razor.Pages.TvShows
 
         public async Task<IActionResult> OnGetAsync()
         {
-           var tvShow = await _tvSeriesApiService.GetTvSeriesAsync(Search);
-            if (tvShow == null)
-            {
-                return RedirectToPage("./Index");
-            }
-
-            TvShow = tvShow;
-            return Page();
+            // TODO: Move this logic in to the service after moving it to its own library
+            TvShow = await _tvShowsService.FindAsync(Search);
+            return TvShow == null ? RedirectToPage("./Index") : Page();
         }
 
         public async Task<IActionResult> OnPostAsync()

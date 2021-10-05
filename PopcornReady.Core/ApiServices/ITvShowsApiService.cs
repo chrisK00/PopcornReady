@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using PopcornReady.Razor.Entities;
+using PopcornReady.Core.Data.Entities;
 
-namespace PopcornReady.Razor.ApiServices
+namespace PopcornReady.Core.ApiServices
 {
     public interface ITvShowsApiService
     {

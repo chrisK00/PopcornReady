@@ -2,10 +2,10 @@
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using PopcornReady.Razor.ApiModels.Episodate;
-using PopcornReady.Razor.Entities;
+using PopcornReady.Core.ApiModels.Episodate;
+using PopcornReady.Core.Data.Entities;
 
-namespace PopcornReady.Razor.ApiServices
+namespace PopcornReady.Core.ApiServices
 {
     public class EpisodateApiService : ITvShowsApiService
     {
