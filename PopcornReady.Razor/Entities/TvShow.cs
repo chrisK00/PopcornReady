@@ -12,5 +12,6 @@ namespace PopcornReady.Razor.Entities
         public string Status { get; set; }
         public DateTime LastUpdateDate { get; } = DateTime.Now;
         public Episode NextEpisode { get; set; }
+        public string Url { get; set; }
     }
 }

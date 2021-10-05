@@ -22,5 +22,6 @@ namespace PopcornReady.Razor.ApiModels.Episodate
         public EpisodateEpisode NextEpisode { get; set; }
 
         public EpisodateEpisode[] Episodes { get; set; }
+        public string Url { get; set; }
     }
 }

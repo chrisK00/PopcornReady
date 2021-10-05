@@ -19,15 +19,22 @@ namespace PopcornReady.Razor.ApiServices
 
         public async Task<TvShow> GetTvSeriesAsync(string name)
         {
+            name = name.Replace(' ', '-');
             var client = _clientFactory.CreateClient("episodate");
-            var episodedateTvShow = (await client.GetFromJsonAsync<EpisodateRootobject>($"{_showDetailsUri}?q={name}")).TvShow;
+            var request = await client.GetAsync($"{_showDetailsUri}?q={name}");
+            if (request.Content.Headers.ContentLength < 14)
+            {
+                return null;
+            }
+
+            var episodedateTvShow = (await request.Content.ReadFromJsonAsync<EpisodateRootobject>()).TvShow;
 
             var tvShow = new TvShow
             {
                 Name = episodedateTvShow.Name,
                 ApiId = episodedateTvShow.Id,
                 Status = episodedateTvShow.Status,
-
+                Url = episodedateTvShow.Url
             };
 
             if (episodedateTvShow.NextEpisode == null)

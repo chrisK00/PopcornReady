@@ -23,13 +23,17 @@
                 @foreach (var show in Model.TvShows)
                 {
                     <tr>
-                        <td>@show.Name</td>
+                        <td><a href="@show.Url">@show.Name</a></td>
                         <td>@show.Status</td>
 
                         <td>
                             @if (show.NextEpisode != null)
                             {
-                                <span>@show.NextEpisode.Name: @show.NextEpisode.AirDate.ToLocalTime().ToShortDateString()</span>
+                                <span>
+                                    @show.NextEpisode.Name: @show.NextEpisode.AirDate.ToLocalTime().ToShortDateString() - @{
+                                        var time = show.NextEpisode.AirDate - DateTime.Now;
+                                    }@time.Days days
+                                </span>
                             }
                         </td>
                     </tr>
