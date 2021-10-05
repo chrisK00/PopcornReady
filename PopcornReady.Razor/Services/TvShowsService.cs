@@ -23,7 +23,7 @@ namespace PopcornReady.Razor.Services
 
         public async Task<IEnumerable<TvShow>> GetAllAsync()
         {
-            return await _context.TvShows.ToListAsync();
+            return await _context.TvShows.Include(x => x.NextEpisode).ToListAsync();
         }
     }
 }

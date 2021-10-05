@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using PopcornReady.Razor.ApiModels.Episodate;
@@ -19,17 +20,30 @@ namespace PopcornReady.Razor.ApiServices
         public async Task<TvShow> GetTvSeriesAsync(string name)
         {
             var client = _clientFactory.CreateClient("episodate");
-            var episodedateTvSeries = await client.GetFromJsonAsync<EpisodateRootobject>($"{_showDetailsUri}?q={name}");
+            var episodedateTvShow = (await client.GetFromJsonAsync<EpisodateRootobject>($"{_showDetailsUri}?q={name}")).TvShow;
 
-            //use automapper and its conversions e.x date should be datetime and wtf is countdown of type object
-            var tvSeries = new TvShow
+            var tvShow = new TvShow
             {
-                Name = episodedateTvSeries.TvShow.Name,
-                ApiId = episodedateTvSeries.TvShow.Id,
-                Status = episodedateTvSeries.TvShow.Status
+                Name = episodedateTvShow.Name,
+                ApiId = episodedateTvShow.Id,
+                Status = episodedateTvShow.Status,
+
             };
 
-            return tvSeries;
+            if (episodedateTvShow.NextEpisode == null)
+            {
+                return tvShow;
+            }
+
+            tvShow.NextEpisode = new Episode
+            {
+                AirDate = DateTime.Parse(episodedateTvShow.NextEpisode.AirDate),
+                Name = episodedateTvShow.NextEpisode.Name,
+                Season = episodedateTvShow.NextEpisode.Season,
+                Number = episodedateTvShow.NextEpisode.Episode
+            };
+
+            return tvShow;
         }
     }
 }

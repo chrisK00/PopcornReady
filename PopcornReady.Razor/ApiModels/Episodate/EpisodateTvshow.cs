@@ -18,7 +18,9 @@ namespace PopcornReady.Razor.ApiModels.Episodate
         [JsonPropertyName("image_thumbnail_path")]
         public string ImagePath { get; set; }
 
-        public object Countdown { get; set; }
+        [JsonPropertyName("countdown")]
+        public EpisodateEpisode NextEpisode { get; set; }
+
         public EpisodateEpisode[] Episodes { get; set; }
     }
 }

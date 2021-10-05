@@ -15,5 +15,6 @@ namespace PopcornReady.Razor.Data
         }
 
         public DbSet<TvShow> TvShows { get; set; }
+        public DbSet<Episode> Episodes { get; set; }
     }
 }

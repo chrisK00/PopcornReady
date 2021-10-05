@@ -1,7 +1,14 @@
-﻿@page
+﻿@page "{search}"
 @model PopcornReady.Razor.Pages.TvShows.AddModel
 @{
 }
+
+
+<div class="row mt-2">
+    <div class="col-6 offset-2">
+        <a asp-page="./Index" class="btn mb-2 btn-danger">Back</a>
+    </div>
+</div>
 
 <form method="post">
 
@@ -23,10 +30,31 @@
                         <label asp-for="TvShow.StartDate"></label>
                         @if (Model.TvShow.StartDate.HasValue)
                         {
-                            <input class="form-control" readonly asp-for="TvShow.StartDate.Value.ToShortDateString()" />
+                            <input class="form-control" readonly asp-for="TvShow.StartDate.Value" />
                         }
                         else
                         { <input class="form-control" readonly />}
+                    </div>
+                    <div class="card-footer mt-2">
+                        @if (Model.TvShow.NextEpisode != null)
+                        {
+                            <label asp-for="TvShow.NextEpisode"></label>
+                            <div class="form-group">
+                                <input class="form-control" readonly asp-for="TvShow.NextEpisode.Name" />
+                            </div>
+                            <div class="form-group">
+
+                                <input class="form-control" readonly asp-for="TvShow.NextEpisode.AirDate" />
+                            </div>
+                            <div class="form-group">
+
+                                <input class="form-control" readonly asp-for="TvShow.NextEpisode.Number" />
+                            </div>
+                            <div class="form-group">
+
+                                <input class="form-control" readonly asp-for="TvShow.NextEpisode.Season" />
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -36,7 +64,6 @@
     <div class="row mt-2">
         <div class="col-6 offset-2">
             <button type="submit" class="btn btn-success">Save</button>
-            <button asp-page="/" class="btn btn-danger">Back</button>
         </div>
     </div>
 </form>

@@ -2,25 +2,39 @@
 @model PopcornReady.Razor.Pages.TvShows.IndexModel
 @{
 }
-
-<h1>Welcome</h1>
 <form method="post">
-    <div class="form-group">
-        <input asp-for="Search" />
-        <button type="submit" class="btn btn-success">Add</button>
+    <div class=" ml-2 mt-5 form-group d-flex">
+        <input class="form-control col-4" placeholder="arrow" asp-for="Search" />
+        <button type="submit" class="ml-2 btn btn-success">Search</button>
     </div>
 </form>
-
 <div class="row">
     <div class="col-10">
         @if (Model.TvShows?.Count() > 0)
         {
-            <ul>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Show</th>
+                        <th>Status</th>
+                        <th>Next Episode</th>
+                    </tr>
+                </thead>
                 @foreach (var show in Model.TvShows)
                 {
-                    <li>@show.Name @show.Status</li>
+                    <tr>
+                        <td>@show.Name</td>
+                        <td>@show.Status</td>
+
+                        <td>
+                            @if (show.NextEpisode != null)
+                            {
+                                <span>@show.NextEpisode.Name: @show.NextEpisode.AirDate.ToLocalTime().ToShortDateString()</span>
+                            }
+                        </td>
+                    </tr>
                 }
-            </ul>
+            </table>
         }
     </div>
 </div>

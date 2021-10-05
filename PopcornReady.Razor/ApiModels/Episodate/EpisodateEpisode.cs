@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace PopcornReady.Razor.ApiModels.Episodate
 {
@@ -11,5 +10,4 @@ namespace PopcornReady.Razor.ApiModels.Episodate
         [JsonPropertyName("air_date")]
         public string AirDate { get; set; }
     }
-
 }
