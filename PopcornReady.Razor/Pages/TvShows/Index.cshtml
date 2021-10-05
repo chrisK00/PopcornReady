@@ -1,0 +1,26 @@
+﻿@page
+@model PopcornReady.Razor.Pages.TvShows.IndexModel
+@{
+}
+
+<h1>Welcome</h1>
+<form method="post">
+    <div class="form-group">
+        <input asp-for="Search" />
+        <button type="submit" class="btn btn-success">Add</button>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-10">
+        @if (Model.TvShows?.Count() > 0)
+        {
+            <ul>
+                @foreach (var show in Model.TvShows)
+                {
+                    <li>@show.Name @show.Status</li>
+                }
+            </ul>
+        }
+    </div>
+</div>

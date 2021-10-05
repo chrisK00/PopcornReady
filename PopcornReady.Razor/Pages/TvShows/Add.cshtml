@@ -1,0 +1,42 @@
+﻿@page
+@model PopcornReady.Razor.Pages.TvShows.AddModel
+@{
+}
+
+<form method="post">
+
+    <div class="row">
+        <div class="col-6 offset-2">
+            <input hidden asp-for="TvShow.ApiId" />
+            <input hidden asp-for="TvShow.LastUpdateDate" />
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-group ">
+                        <label asp-for="TvShow.Name"></label>
+                        <input class="form-control" readonly asp-for="TvShow.Name" />
+                    </div>
+                    <div class="card-group">
+                        <label asp-for="TvShow.Status"></label>
+                        <input class="form-control" readonly asp-for="TvShow.Status" />
+                    </div>
+                    <div class="card-group">
+                        <label asp-for="TvShow.StartDate"></label>
+                        @if (Model.TvShow.StartDate.HasValue)
+                        {
+                            <input class="form-control" readonly asp-for="TvShow.StartDate.Value.ToShortDateString()" />
+                        }
+                        else
+                        { <input class="form-control" readonly />}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-6 offset-2">
+            <button type="submit" class="btn btn-success">Save</button>
+            <button asp-page="/" class="btn btn-danger">Back</button>
+        </div>
+    </div>
+</form>
