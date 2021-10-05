@@ -3,7 +3,6 @@
 @{
 }
 
-
 <div class="row mt-2">
     <div class="col-6 offset-2">
         <a asp-page="./Index" class="btn mb-2 btn-danger">Back</a>
@@ -12,11 +11,23 @@
 
 <form method="post">
 
-    <div class="row">
+    <div class="text-light row">
         <div class="col-6 offset-2">
             <input hidden asp-for="TvShow.ApiId" />
             <input hidden asp-for="TvShow.LastUpdateDate" />
-            <div class="card">
+            <input hidden asp-for="TvShow.ImageUrl" />
+            <input hidden asp-for="TvShow.DescriptionUrl" />
+            <input hidden asp-for="TvShow.Url" />
+            <div class="card bg-dark">
+                <div class="card-header bg-dark">
+                    <div class="row">
+                        <a target="_blank" class="w-25" href="@Model.TvShow.DescriptionUrl">
+                            <img class="img-fluid" alt="@Model.TvShow.Name" src="@Model.TvShow.ImageUrl" />
+                        </a>
+                        <textarea class="text-light col-8 ml-2 mr-2 bg-dark" asp-for="TvShow.Description" readonly>
+                        </textarea>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="card-group ">
                         <label asp-for="TvShow.Name"></label>
@@ -26,19 +37,13 @@
                         <label asp-for="TvShow.Status"></label>
                         <input class="form-control" readonly asp-for="TvShow.Status" />
                     </div>
-                    <div class="card-group">
-                        <label asp-for="TvShow.StartDate"></label>
-                        @if (Model.TvShow.StartDate.HasValue)
-                        {
-                            <input class="form-control" readonly asp-for="TvShow.StartDate.Value" />
-                        }
-                        else
-                        { <input class="form-control" readonly />}
-                    </div>
+
+                    <a href="@Model.TvShow.Url" class="btn btn-outline-info mt-2" target="_blank">Episodate</a>
+
                     <div class="card-footer mt-2">
                         @if (Model.TvShow.NextEpisode != null)
                         {
-                            <label asp-for="TvShow.NextEpisode"></label>
+                            <label>Next Episode</label>
                             <div class="form-group">
                                 <input class="form-control" readonly asp-for="TvShow.NextEpisode.Name" />
                             </div>
@@ -51,10 +56,8 @@
                             <div class="form-group">
                                 <input class="form-control" readonly asp-for="TvShow.NextEpisode.Season" />
                             </div>
-                            <div class="form-group">
-                                <input class="form-control" readonly asp-for="TvShow.Url" />
-                            </div>
                         }
+
                     </div>
                 </div>
             </div>

@@ -6,6 +6,5 @@ namespace PopcornReady.Core.ApiServices
     public interface ITvShowsApiService
     {
         Task<TvShow> GetTvSeriesAsync(string name);
-        // TODO: get image for tv show
     }
 }

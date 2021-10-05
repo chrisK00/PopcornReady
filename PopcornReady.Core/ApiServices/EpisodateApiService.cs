@@ -34,7 +34,10 @@ namespace PopcornReady.Core.ApiServices
                 Name = episodedateTvShow.Name,
                 ApiId = episodedateTvShow.Id,
                 Status = episodedateTvShow.Status,
-                Url = episodedateTvShow.Url
+                Url = episodedateTvShow.Url,
+                ImageUrl = episodedateTvShow.ImagePath,
+                Description = $"{episodedateTvShow.Description[..200]}...",
+                DescriptionUrl = episodedateTvShow.DescriptionUrl
             };
 
             if (episodedateTvShow.NextEpisode == null)

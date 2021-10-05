@@ -23,5 +23,8 @@ namespace PopcornReady.Core.ApiModels.Episodate
 
         public EpisodateEpisode[] Episodes { get; set; }
         public string Url { get; set; }
+        public string Description { get; set; }
+        [JsonPropertyName("description_source")]
+        public string DescriptionUrl { get; set; }
     }
 }

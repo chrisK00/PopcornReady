@@ -17,6 +17,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Show</th>
                         <th>Status</th>
                         <th>Next Episode</th>
@@ -25,6 +26,11 @@
                 @foreach (var show in Model.TvShows)
                 {
                     <tr>
+                        <td>
+                            <a href="@show.Url">
+                                <img alt="@show.Name" class="w-25" src="@show.ImageUrl" />
+                            </a>
+                        </td>
                         <td><a href="@show.Url">@show.Name</a></td>
                         <td>@show.Status</td>
 
