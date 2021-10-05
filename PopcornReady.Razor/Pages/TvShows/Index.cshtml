@@ -2,10 +2,12 @@
 @model PopcornReady.Razor.Pages.TvShows.IndexModel
 @{
 }
+
 <form method="post">
     <div class=" ml-2 mt-5 form-group d-flex">
         <input class="form-control col-4" placeholder="arrow" asp-for="Search" />
         <button type="submit" class="ml-2 btn btn-success">Search</button>
+        <span class="text-danger ml-2" asp-validation-for="Search"></span>
     </div>
 </form>
 <div class="row">
@@ -42,3 +44,7 @@
         }
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

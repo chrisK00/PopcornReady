@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,6 +17,7 @@ namespace PopcornReady.Razor.Pages.TvShows
             _tvShowsService = tvShowsService;
         }
 
+        [Required, MinLength(2, ErrorMessage = "Search for a name with more than 2 characters")]
         [BindProperty]
         public string Search { get; set; }
 
@@ -28,7 +30,7 @@ namespace PopcornReady.Razor.Pages.TvShows
 
         public ActionResult OnPost()
         {
-            return string.IsNullOrWhiteSpace(Search) ? Page() : RedirectToPage("./Add", new { Search });
+            return !ModelState.IsValid ? Page() : RedirectToPage("./Add", new { Search });
         }
     }
 }
