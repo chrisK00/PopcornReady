@@ -39,7 +39,7 @@ namespace PopcornReady.Core.Services
         {
             var tvShow = await _context.TvShows.AsNoTracking()
                 .Include(x => x.NextEpisode)
-                .FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
+                .FirstOrDefaultAsync(x => string.Equals(x.Name, name, System.StringComparison.OrdinalIgnoreCase));
 
             tvShow ??= await _tvShowsApiService.GetTvSeriesAsync(name);
             return tvShow;
