@@ -25,7 +25,8 @@ namespace PopcornReady.Razor.Pages.TvShows
 
         public async Task OnGetAsync()
         {
-            TvShows = await _tvShowsService.GetAllAsync();
+            // TOOD: remove hardcoded 1
+            TvShows = await _tvShowsService.GetAllAsync(1);
         }
 
         public ActionResult OnPost()

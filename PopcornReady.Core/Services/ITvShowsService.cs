@@ -6,8 +6,9 @@ namespace PopcornReady.Core.Services
 {
     public interface ITvShowsService
     {
-        Task<IEnumerable<TvShow>> GetAllAsync();
-        Task AddAsync(TvShow tvShow);
+        // TODO: Use Request models instead
+        Task<IEnumerable<TvShow>> GetAllAsync(int userId);
+        Task AddAsync(TvShow tvShow, int userId);
         Task<TvShow> FindAsync(string name);
     }
 }

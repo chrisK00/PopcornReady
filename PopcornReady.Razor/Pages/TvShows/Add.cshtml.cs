@@ -30,7 +30,8 @@ namespace PopcornReady.Razor.Pages.TvShows
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await _tvShowsService.AddAsync(TvShow);
+            // TODO: Change to take in user id from token
+            await _tvShowsService.AddAsync(TvShow, 1);
             return RedirectToPage("./Index");
         }
     }

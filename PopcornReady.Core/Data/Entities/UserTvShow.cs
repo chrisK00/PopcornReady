@@ -5,7 +5,8 @@
     /// </summary>
     public class UserTvShow
     {
-        public int UserId { get; set; }
-        public int TvShowId { get; set; }
+        public int UserId { get; init; }
+        public int TvShowId { get; init; }
+        public TvShow TvShow { get; init; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PopcornReady.Core.ApiServices;
@@ -18,28 +19,43 @@ namespace PopcornReady.Core.Services
             _tvShowsApiService = tvShowsApiService;
         }
 
-        public async Task AddAsync(TvShow tvShow)
+        public async Task AddAsync(TvShow tvShow, int userId)
         {
-            if (await _context.TvShows.AnyAsync(x => x.ApiId == tvShow.ApiId))
+            var tvShowFromDb = await _context.TvShows.FirstOrDefaultAsync(x => x.ApiId == tvShow.ApiId);
+            UserTvShow userTvShow = null;
+
+            if (tvShowFromDb == null)
             {
-                return;
+                await _context.AddAsync(tvShow);
+                userTvShow = new UserTvShow { UserId = userId, TvShowId = tvShow.Id };
             }
 
-            await _context.AddAsync(tvShow);
+            if (tvShowFromDb != null)
+            {
+                if (await _context.UserTvShows.AnyAsync(x => x.TvShowId == tvShowFromDb.Id && x.UserId == userId))
+                {
+                    return;
+                }
+
+                userTvShow = new UserTvShow { UserId = userId, TvShowId = tvShowFromDb.Id };
+            }
+
+            await _context.AddAsync(userTvShow);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TvShow>> GetAllAsync()
+        public async Task<IEnumerable<TvShow>> GetAllAsync(int userId)
         {
-            return await _context.TvShows.AsNoTracking()
-                .Include(x => x.NextEpisode).ToListAsync();
+            return await _context.UserTvShows.AsNoTracking().Include(x => x.TvShow.NextEpisode)
+                .Where(x => x.UserId == userId)
+                .Select(x => x.TvShow).ToListAsync();
         }
 
         public async Task<TvShow> FindAsync(string name)
         {
             var tvShow = await _context.TvShows.AsNoTracking()
                 .Include(x => x.NextEpisode)
-                .FirstOrDefaultAsync(x => string.Equals(x.Name, name, System.StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
 
             tvShow ??= await _tvShowsApiService.GetTvSeriesAsync(name);
             return tvShow;
