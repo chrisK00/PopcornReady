@@ -27,10 +27,10 @@ namespace PopcornReady.Core.Services
             if (tvShowFromDb == null)
             {
                 await _context.AddAsync(tvShow);
+                await _context.SaveChangesAsync();
                 userTvShow = new UserTvShow { UserId = userId, TvShowId = tvShow.Id };
             }
-
-            if (tvShowFromDb != null)
+            else
             {
                 if (await _context.UserTvShows.AnyAsync(x => x.TvShowId == tvShowFromDb.Id && x.UserId == userId))
                 {
@@ -59,6 +59,16 @@ namespace PopcornReady.Core.Services
 
             tvShow ??= await _tvShowsApiService.GetTvSeriesAsync(name);
             return tvShow;
+        }
+
+        public async Task RemoveAsync(int tvShowId, int userId)
+        {
+            var userTvShow = await _context.UserTvShows.FirstOrDefaultAsync(x => x.TvShowId == tvShowId && x.UserId == userId);
+
+            _ = userTvShow ?? throw new KeyNotFoundException($"Tv Show with the id {tvShowId} was not found");
+
+            _context.UserTvShows.Remove(userTvShow);
+            await _context.SaveChangesAsync();
         }
     }
 }

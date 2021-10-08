@@ -1,10 +1,10 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PopcornReady.Core.Data.Entities;
 using PopcornReady.Core.Services;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace PopcornReady.Razor.Pages.TvShows
 {
@@ -17,7 +17,7 @@ namespace PopcornReady.Razor.Pages.TvShows
             _tvShowsService = tvShowsService;
         }
 
-        [Required, MinLength(2, ErrorMessage = "Search for a name with more than 2 characters")]
+        [MinLength(2, ErrorMessage = "Search for a name with more than 2 characters")]
         [BindProperty]
         public string Search { get; set; }
 
@@ -32,6 +32,12 @@ namespace PopcornReady.Razor.Pages.TvShows
         public ActionResult OnPost()
         {
             return !ModelState.IsValid ? Page() : RedirectToPage("./Add", new { Search });
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        {
+            await _tvShowsService.RemoveAsync(id, 1);
+            return RedirectToPage();
         }
     }
 }

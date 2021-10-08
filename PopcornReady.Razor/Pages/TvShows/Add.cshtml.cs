@@ -23,7 +23,8 @@ namespace PopcornReady.Razor.Pages.TvShows
 
         public async Task<IActionResult> OnGetAsync()
         {
-            // TODO: Move this logic in to the service after moving it to its own library
+            if (string.IsNullOrWhiteSpace(Search)) return RedirectToPage("./Index");
+
             TvShow = await _tvShowsService.FindAsync(Search);
             return TvShow == null ? RedirectToPage("./Index") : Page();
         }

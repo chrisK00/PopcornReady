@@ -21,6 +21,7 @@
                         <th>Show</th>
                         <th>Status</th>
                         <th>Next Episode</th>
+                        <th></th>
                     </tr>
                 </thead>
                 @foreach (var show in Model.TvShows)
@@ -43,6 +44,11 @@
                                     }@time.Days days
                                 </span>
                             }
+                        </td>
+                        <td>
+                            <form method="post">
+                                <button type="submit" asp-route-id="@show.Id" asp-page-handler="Delete" class="btn btn-danger">Remove</button>
+                            </form>
                         </td>
                     </tr>
                 }
