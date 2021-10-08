@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PopcornReady.Core.ApiServices;
 using PopcornReady.Core.Data;
 using PopcornReady.Core.Data.Entities;
@@ -12,11 +13,13 @@ namespace PopcornReady.Core.Services
     {
         private readonly DataContext _context;
         private readonly ITvShowsApiService _tvShowsApiService;
+        private readonly ILogger<TvShowsService> _logger;
 
-        public TvShowsService(DataContext context, ITvShowsApiService tvShowsApiService)
+        public TvShowsService(DataContext context, ITvShowsApiService tvShowsApiService, ILogger<TvShowsService> logger)
         {
             _context = context;
             _tvShowsApiService = tvShowsApiService;
+            _logger = logger;
         }
 
         public async Task AddAsync(TvShow tvShow, int userId)
@@ -26,6 +29,7 @@ namespace PopcornReady.Core.Services
 
             if (tvShowFromDb == null)
             {
+                _logger.LogInformation($"Adding a new Tv Show named: {tvShow.Name} to the database");
                 await _context.AddAsync(tvShow);
                 await _context.SaveChangesAsync();
                 userTvShow = new UserTvShow { UserId = userId, TvShowId = tvShow.Id };
@@ -34,6 +38,7 @@ namespace PopcornReady.Core.Services
             {
                 if (await _context.UserTvShows.AnyAsync(x => x.TvShowId == tvShowFromDb.Id && x.UserId == userId))
                 {
+                    _logger.LogInformation($"A user tried to track an already tracked Tv Show called: {tvShow.Name}");
                     return;
                 }
 
@@ -57,7 +62,12 @@ namespace PopcornReady.Core.Services
                 .Include(x => x.NextEpisode)
                 .FirstOrDefaultAsync(x => x.Name.ToLower() == name.ToLower());
 
-            tvShow ??= await _tvShowsApiService.GetTvSeriesAsync(name);
+            if (tvShow == null)
+            {
+                _logger.LogInformation($"The Tv Show: {name} does not exist in the Db, sending a request to the API");
+                tvShow = await _tvShowsApiService.GetTvSeriesAsync(name);
+            }
+
             return tvShow;
         }
 
