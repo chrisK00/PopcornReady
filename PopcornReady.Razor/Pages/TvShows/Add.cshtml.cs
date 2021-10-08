@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PopcornReady.Core.Data.Entities;
@@ -9,10 +10,12 @@ namespace PopcornReady.Razor.Pages.TvShows
     public class AddModel : PageModel
     {
         private readonly ITvShowsService _tvShowsService;
+        private readonly INotyfService _notyf;
 
-        public AddModel(ITvShowsService tvShowsService)
+        public AddModel(ITvShowsService tvShowsService, INotyfService notyf)
         {
             _tvShowsService = tvShowsService;
+            _notyf = notyf;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -26,7 +29,14 @@ namespace PopcornReady.Razor.Pages.TvShows
             if (string.IsNullOrWhiteSpace(Search)) return RedirectToPage("./Index");
 
             TvShow = await _tvShowsService.FindAsync(Search);
-            return TvShow == null ? RedirectToPage("./Index") : Page();
+
+            if (TvShow == null)
+            {
+                _notyf.Error($"The Tv Show: {Search} was not found");
+                return RedirectToPage("./Index");
+            }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()

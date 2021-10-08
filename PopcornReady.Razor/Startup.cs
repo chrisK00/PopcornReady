@@ -1,3 +1,4 @@
+using AspNetCoreHero.ToastNotification;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +21,13 @@ namespace PopcornReady.Razor
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppServices(Configuration.GetConnectionString("Default"));
+            services.AddNotyf(config =>
+            {
+                config.DurationInSeconds = 10;
+                config.IsDismissable = true;
+                config.Position = NotyfPosition.BottomRight;
+            });
+
             services.AddRazorPages();
         }
 

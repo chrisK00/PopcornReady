@@ -1,3 +1,4 @@
+using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PopcornReady.Core.Data.Entities;
@@ -11,10 +12,12 @@ namespace PopcornReady.Razor.Pages.TvShows
     public class IndexModel : PageModel
     {
         private readonly ITvShowsService _tvShowsService;
+        private readonly INotyfService _notyf;
 
-        public IndexModel(ITvShowsService tvShowsService)
+        public IndexModel(ITvShowsService tvShowsService, INotyfService notyf)
         {
             _tvShowsService = tvShowsService;
+            _notyf = notyf;
         }
 
         [MinLength(2, ErrorMessage = "Search for a name with more than 2 characters")]
@@ -37,6 +40,7 @@ namespace PopcornReady.Razor.Pages.TvShows
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
             await _tvShowsService.RemoveAsync(id, 1);
+            _notyf.Warning("The Tv Show has been removed");
             return RedirectToPage();
         }
     }
