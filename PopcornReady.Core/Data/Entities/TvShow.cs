@@ -10,7 +10,7 @@ namespace PopcornReady.Core.Data.Entities
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string Status { get; set; }
-        public DateTime LastUpdateDate { get; } = DateTime.Now;
+        public DateTime LastUpdateDate { get; set; } = DateTime.UtcNow;
         public Episode NextEpisode { get; set; }
         public string Url { get; set; }
         public string ImageUrl { get; set; }

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using PopcornReady.Core.ApiModels.Episodate;
+using PopcornReady.Core.Data.Entities;
+using PopcornReady.Core.Options;
+using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using PopcornReady.Core.ApiModels.Episodate;
-using PopcornReady.Core.Data.Entities;
 
 namespace PopcornReady.Core.ApiServices
 {
@@ -20,7 +21,7 @@ namespace PopcornReady.Core.ApiServices
         public async Task<TvShow> GetTvSeriesAsync(string name)
         {
             name = name.Replace(' ', '-');
-            var client = _clientFactory.CreateClient("episodate");
+            var client = _clientFactory.CreateClient(ApiOptions.EpisodateClientName);
             var request = await client.GetAsync($"{_showDetailsUri}?q={name}");
             if (request.Content.Headers.ContentLength < 14)
             {

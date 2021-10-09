@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PopcornReady.Core.Extensions;
+using PopcornReady.Razor.BackgroundServices;
 
 namespace PopcornReady.Razor
 {
@@ -20,7 +21,8 @@ namespace PopcornReady.Razor
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppServices(Configuration.GetConnectionString("Default"));
+            services.AddHostedService<RemoveNotTrackedTvShowsService>();
+            services.AddAppServices(Configuration);
             services.AddNotyf(config =>
             {
                 config.DurationInSeconds = 10;
