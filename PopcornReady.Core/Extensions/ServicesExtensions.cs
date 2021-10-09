@@ -15,7 +15,7 @@ namespace PopcornReady.Core.Extensions
         {
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseSqlite(config.GetConnectionString("Default"));
+                opt.UseSqlServer(config.GetConnectionString("Default"));
                 opt.EnableSensitiveDataLogging();
             });
 

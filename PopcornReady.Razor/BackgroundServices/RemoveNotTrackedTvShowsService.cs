@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PopcornReady.Core.Data;
+using PopcornReady.Core.Extensions;
 using System;
 using System.Linq;
 using System.Threading;
@@ -24,7 +25,7 @@ namespace PopcornReady.Razor.BackgroundServices
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation($"[{DateTime.Now}]: Removing not tracked Tv Shows");
+                _logger.LogInfoWithTime($"Removing not tracked Tv Shows");
                 using var scope = _serviceScopeFactory.CreateScope();
 
                 try
@@ -38,8 +39,8 @@ namespace PopcornReady.Razor.BackgroundServices
                     context.TvShows.RemoveRange(notTrackedTvShows);
                     await context.SaveChangesAsync(stoppingToken);
 
-                    _logger.LogInformation($"[{DateTime.Now}]: Removed {notTrackedTvShows.Count} not tracked Tv Shows");
-                    await Task.Delay(TimeSpan.FromDays(7), stoppingToken);
+                    _logger.LogInfoWithTime($"Removed {notTrackedTvShows.Count} not tracked Tv Shows");
+                    await Task.Delay(TimeSpan.FromDays(3), stoppingToken);
                 }
                 catch (OperationCanceledException)
                 {

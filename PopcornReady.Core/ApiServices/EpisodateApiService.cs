@@ -18,7 +18,7 @@ namespace PopcornReady.Core.ApiServices
             _clientFactory = clientFactory;
         }
 
-        public async Task<TvShow> GetTvSeriesAsync(string name)
+        public async Task<TvShow> GetTvShowAsync(string name)
         {
             name = name.Replace(' ', '-');
             var client = _clientFactory.CreateClient(ApiOptions.EpisodateClientName);
@@ -28,30 +28,35 @@ namespace PopcornReady.Core.ApiServices
                 return null;
             }
 
-            var episodedateTvShow = (await request.Content.ReadFromJsonAsync<EpisodateRootobject>()).TvShow;
+            var episodateTvShow = (await request.Content.ReadFromJsonAsync<EpisodateRootobject>()).TvShow;
 
+            return CreateTvShow(episodateTvShow);
+        }
+
+        private TvShow CreateTvShow(EpisodateTvshow episodateTvShow)
+        {
             var tvShow = new TvShow
             {
-                Name = episodedateTvShow.Name,
-                ApiId = episodedateTvShow.Id,
-                Status = episodedateTvShow.Status,
-                Url = episodedateTvShow.Url,
-                ImageUrl = episodedateTvShow.ImagePath,
-                Description = $"{episodedateTvShow.Description[..200]}...",
-                DescriptionUrl = episodedateTvShow.DescriptionUrl
+                Name = episodateTvShow.Name,
+                ApiId = episodateTvShow.Id,
+                Status = episodateTvShow.Status,
+                Url = episodateTvShow.Url,
+                ImageUrl = episodateTvShow.ImagePath,
+                Description = $"{episodateTvShow.Description[..200]}...",
+                DescriptionUrl = episodateTvShow.DescriptionUrl
             };
 
-            if (episodedateTvShow.NextEpisode == null)
+            if (episodateTvShow.NextEpisode == null)
             {
                 return tvShow;
             }
 
             tvShow.NextEpisode = new Episode
             {
-                AirDate = DateTime.Parse(episodedateTvShow.NextEpisode.AirDate),
-                Name = episodedateTvShow.NextEpisode.Name,
-                Season = episodedateTvShow.NextEpisode.Season,
-                Number = episodedateTvShow.NextEpisode.Episode
+                AirDate = DateTime.Parse(episodateTvShow.NextEpisode.AirDate),
+                Name = episodateTvShow.NextEpisode.Name,
+                Season = episodateTvShow.NextEpisode.Season,
+                Number = episodateTvShow.NextEpisode.Episode
             };
 
             return tvShow;

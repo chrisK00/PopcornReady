@@ -22,6 +22,8 @@ namespace PopcornReady.Razor
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHostedService<RemoveNotTrackedTvShowsService>();
+            services.AddHostedService<UpdateTvShowsService>();
+
             services.AddAppServices(Configuration);
             services.AddNotyf(config =>
             {

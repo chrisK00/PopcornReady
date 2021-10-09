@@ -63,13 +63,13 @@ namespace PopcornReady.Tests.Services
         {
             //Arrange
             var tvShow = CreateTvShow();
-            _mockTvShowsApiService.Setup(x => x.GetTvSeriesAsync(tvShow.Name)).ReturnsAsync(tvShow);
+            _mockTvShowsApiService.Setup(x => x.GetTvShowAsync(tvShow.Name)).ReturnsAsync(tvShow);
 
             //Act
             var result = await _sut.FindAsync(tvShow.Name);
 
             //Assert
-            _mockTvShowsApiService.Verify(x => x.GetTvSeriesAsync(tvShow.Name), Times.Once);
+            _mockTvShowsApiService.Verify(x => x.GetTvShowAsync(tvShow.Name), Times.Once);
             result.Should().NotBeNull();
             result.Name.Should().Be(tvShow.Name);
         }

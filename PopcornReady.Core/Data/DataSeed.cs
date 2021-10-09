@@ -18,9 +18,9 @@ namespace PopcornReady.Core.Data
 
             var users = new List<AppUser>
             {
-                new AppUser {Id = 1, UserName = "Chris"},
-                new AppUser { Id = 2, UserName = "Mr Robot"},
-                new AppUser { Id = 3, UserName = "Frenchie"}
+                new AppUser { UserName = "Chris"},
+                new AppUser { UserName = "Mr Robot"},
+                new AppUser { UserName = "Frenchie"}
             };
 
             context.AddRange(users);

@@ -65,7 +65,7 @@ namespace PopcornReady.Core.Services
             if (tvShow == null)
             {
                 _logger.LogInformation($"The Tv Show: {name} does not exist in the Db, sending a request to the API");
-                tvShow = await _tvShowsApiService.GetTvSeriesAsync(name);
+                tvShow = await _tvShowsApiService.GetTvShowAsync(name);
             }
 
             return tvShow;

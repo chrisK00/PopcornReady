@@ -18,10 +18,4 @@
     <ProjectReference Include="..\PopcornReady.Core\PopcornReady.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="pocornReady.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
