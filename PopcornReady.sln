@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PopcornReady.Razor", "Popco
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PopcornReady.Core", "PopcornReady.Core\PopcornReady.Core.csproj", "{58C0F4C4-73B8-4C73-8870-905C0225B7CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopcornReady.Tests", "PopcornReady.Tests\PopcornReady.Tests.csproj", "{DB1AAC4C-6F34-417E-9F8B-57B0711BC0FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PopcornReady.Tests", "PopcornReady.Tests\PopcornReady.Tests.csproj", "{DB1AAC4C-6F34-417E-9F8B-57B0711BC0FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

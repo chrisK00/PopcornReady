@@ -1,0 +1,21 @@
+﻿@model TvShow
+
+<td>
+    <a href="@Model.Url">
+        <img alt="@Model.Name" class="w-25" src="@Model.ImageUrl" />
+    </a>
+</td>
+<td><a href="@Model.Url">@Model.Name</a></td>
+<td>@Model.Status</td>
+
+<td>
+    @if (Model.NextEpisode != null)
+    {
+        <span>
+            @Model.NextEpisode.Name: @Model.NextEpisode.AirDate.ToLocalTime().ToShortDateString() - @{
+                var time = Model.NextEpisode.AirDate - DateTime.Now;
+            }@time.Days days
+        </span>
+    }
+</td>
+
