@@ -2,6 +2,7 @@ using AspNetCoreHero.ToastNotification.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PopcornReady.Core.Data.Entities;
+using PopcornReady.Core.Params;
 using PopcornReady.Core.Services;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,7 +30,7 @@ namespace PopcornReady.Razor.Pages.TvShows
         public async Task OnGetAsync()
         {
             // TOOD: remove hardcoded 1
-            TvShows = await _tvShowsService.GetAllAsync(1);
+            TvShows = await _tvShowsService.GetAllAsync(new TvShowParams { UserId = 1 });
         }
 
         public ActionResult OnPost()

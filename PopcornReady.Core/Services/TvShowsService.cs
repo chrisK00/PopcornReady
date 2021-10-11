@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using PopcornReady.Core.ApiServices;
 using PopcornReady.Core.Data;
 using PopcornReady.Core.Data.Entities;
+using PopcornReady.Core.Params;
 
 namespace PopcornReady.Core.Services
 {
@@ -49,11 +50,25 @@ namespace PopcornReady.Core.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TvShow>> GetAllAsync(int userId)
+        public async Task<IEnumerable<TvShow>> GetAllAsync(TvShowParams param)
         {
-            return await _context.UserTvShows.AsNoTracking().Include(x => x.TvShow.NextEpisode)
-                .Where(x => x.UserId == userId)
-                .Select(x => x.TvShow).ToListAsync();
+            IQueryable<TvShow> query = null;
+
+            if (param.UserId.HasValue)
+            {
+                query = _context.UserTvShows.AsNoTracking().Include(x => x.TvShow.NextEpisode)
+                    .Where(x => x.UserId == param.UserId).Select(x => x.TvShow);
+            }
+            else
+            {
+                query = _context.TvShows.AsNoTracking().Include(x => x.NextEpisode);
+            }
+
+            if (!string.IsNullOrWhiteSpace(param.Title)) query = query.Where(x => x.Name.ToLower().Contains(param.Title.ToLower()));
+
+            if (param.HasNextEpisode) query = query.Where(x => x.NextEpisode != null);
+
+            return await query.ToListAsync();
         }
 
         public async Task<TvShow> FindAsync(string name)
