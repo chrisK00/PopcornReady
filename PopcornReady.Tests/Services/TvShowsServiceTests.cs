@@ -13,6 +13,8 @@ using Xunit;
 
 namespace PopcornReady.Tests.Services
 {
+    // ignore
+    // me
     public class TvShowsServiceTests : IDisposable
     {
         private readonly DataContext _context = new(SqliteInMemory.CreateOptions<DataContext>());
