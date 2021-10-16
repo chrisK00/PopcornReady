@@ -1,0 +1,11 @@
+﻿@model TvShowParams
+
+<form method="get">
+    <div class="mt-5 form-group d-flex">
+        <button type="submit" class="btn btn-info">Filter</button>
+        <label class="ml-2" asp-for="@Model.Title"></label>
+        <input class="form-control col-4 ml-2" asp-for="@Model.Title" />
+        <label class="ml-3" asp-for="@Model.HasNextEpisode"></label>
+        <input class="ml-1 col-1 form-control" asp-for="@Model.HasNextEpisode" />
+    </div>
+</form>

@@ -12,9 +12,8 @@ namespace PopcornReady.Razor.Pages.TvShows
 {
     public class IndexModel : PageModel
     {
-        private readonly ITvShowsService _tvShowsService;
         private readonly INotyfService _notyf;
-
+        private readonly ITvShowsService _tvShowsService;
         public IndexModel(ITvShowsService tvShowsService, INotyfService notyf)
         {
             _tvShowsService = tvShowsService;
@@ -25,12 +24,13 @@ namespace PopcornReady.Razor.Pages.TvShows
         [BindProperty]
         public string Search { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public TvShowParams TvShowParams { get; set; }
         public IEnumerable<TvShow> TvShows { get; set; }
 
         public async Task OnGetAsync()
         {
-            // TOOD: remove hardcoded 1
-            TvShows = await _tvShowsService.GetAllAsync(new TvShowParams { UserId = 1 });
+            TvShows = await _tvShowsService.GetAllAsync(TvShowParams);
         }
 
         public ActionResult OnPost()

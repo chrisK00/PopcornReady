@@ -4,12 +4,15 @@
 }
 
 <form method="post">
-    <div class=" ml-2 mt-5 form-group d-flex">
-        <input class="form-control col-4" placeholder="arrow" asp-for="Search" />
-        <button type="submit" class="ml-2 btn btn-success">Search</button>
+    <div class="mt-5 mb-5 form-group d-flex">
+        <button type="submit" class="btn btn-success">Search</button>
+        <input class="form-control ml-2 col-4" placeholder="arrow" asp-for="Search" />
         <span class="text-danger ml-2" asp-validation-for="Search"></span>
     </div>
 </form>
+
+<partial name="_TvShowFiltersPartial" model="@Model.TvShowParams" />
+
 <div class="row">
     <div class="col-10">
         @if (Model.TvShows?.Count() > 0)
