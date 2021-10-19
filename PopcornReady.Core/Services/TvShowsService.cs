@@ -56,8 +56,8 @@ namespace PopcornReady.Core.Services
 
             if (param.UserId.HasValue)
             {
-                query = _context.UserTvShows.AsNoTracking().Include(x => x.TvShow.NextEpisode)
-                    .Where(x => x.UserId == param.UserId).Select(x => x.TvShow);
+                var userTvShows = _context.UserTvShows.AsNoTracking().Where(x => x.UserId == param.UserId);
+                query = _context.TvShows.AsNoTracking().Where(x => userTvShows.Any(y => y.TvShowId == x.Id));
             }
             else
             {

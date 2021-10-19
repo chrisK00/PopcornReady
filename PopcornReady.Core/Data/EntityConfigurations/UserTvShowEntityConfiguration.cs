@@ -9,7 +9,11 @@ namespace PopcornReady.Core.Data.EntityConfigurations
         public void Configure(EntityTypeBuilder<UserTvShow> builder)
         {
             builder.HasKey(pk => new { pk.TvShowId, pk.UserId });
-            builder.HasOne<AppUser>().WithMany();
+
+            builder.HasOne<AppUser>().WithMany()
+                .HasForeignKey(x => x.UserId);
+            builder.HasOne<TvShow>().WithMany()
+                .HasForeignKey(x => x.TvShowId);
         }
     }
 }

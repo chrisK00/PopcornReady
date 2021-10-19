@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PopcornReady.Core.Data;
 
 namespace PopcornReady.Core.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211019094036_RemovedHardRef")]
+    partial class RemovedHardRef
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,9 +115,12 @@ namespace PopcornReady.Core.Data.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("int");
+
                     b.HasKey("TvShowId", "UserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("UserTvShows");
                 });
@@ -131,15 +136,13 @@ namespace PopcornReady.Core.Data.Migrations
 
             modelBuilder.Entity("PopcornReady.Core.Data.Entities.UserTvShow", b =>
                 {
+                    b.HasOne("PopcornReady.Core.Data.Entities.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
                     b.HasOne("PopcornReady.Core.Data.Entities.TvShow", null)
                         .WithMany()
                         .HasForeignKey("TvShowId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PopcornReady.Core.Data.Entities.AppUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

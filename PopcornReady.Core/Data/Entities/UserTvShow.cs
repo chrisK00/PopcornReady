@@ -7,6 +7,5 @@
     {
         public int UserId { get; init; }
         public int TvShowId { get; init; }
-        public TvShow TvShow { get; init; }
     }
 }
