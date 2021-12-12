@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PopcornReady.Core", "Popcor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PopcornReady.Tests", "PopcornReady.Tests\PopcornReady.Tests.csproj", "{DB1AAC4C-6F34-417E-9F8B-57B0711BC0FF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PopcornReadyV2", "PopcornReadyV2", "{CC447682-7F6B-400B-99E1-34D8B8A0A2D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

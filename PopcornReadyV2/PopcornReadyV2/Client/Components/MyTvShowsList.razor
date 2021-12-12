@@ -1,0 +1,91 @@
+﻿@using Refit
+
+@inject IPopcornAuthClient AuthClient
+@inject ISnackbar Toastr
+@inject IDialogService Dialog
+@inject NavigationManager Nav
+@implements IDisposable
+
+<MudTable Striped="true" Hover="true" Items="_tvShows">
+
+    <HeaderContent>
+        <MudTh></MudTh>
+        <MudTh>Show</MudTh>
+        <MudTh>Status</MudTh>
+        <MudTh>Next Episode</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd><MudLink Href="@context.Url"><img class="w-25" src="@context.ImageUrl" alt="@context.Name" /></MudLink></MudTd>
+        <MudTd><MudLink Href="@context.Url"></MudLink>@context.Name</MudTd>
+        <MudTd>@context.Status</MudTd>
+        <MudTd>
+            @if (context.NextEpisode != null)
+            {
+                <span>
+                    @context.NextEpisode.Name: @context.NextEpisode.AirDate.ToLocalTime().ToShortDateString() - @{
+                        var time = context.NextEpisode.AirDate - DateTime.Now;
+                    }@time.Days days
+                </span>
+            }
+        </MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" @onclick="async () => await RemoveTvShow(context)"></MudIconButton>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+    private ICollection<TvShowResponse> _tvShows;
+
+    private TvShowParams _params = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        AddTvShowDialog.OnShowAdded += async (name) => await OnShowAdded(name);
+        await GetShows();
+    }
+
+    public async Task OnShowAdded(string name)
+    {
+        _tvShows.Add((await AuthClient.GetTvShowAsync(name)).Content);
+        StateHasChanged();
+    }
+
+    public async Task RemoveTvShow(TvShowResponse tvShow)
+    {
+        var result = await Dialog.ShowMessageBox("Remove Tv Show", "Are you sure?");
+        if (result.HasValue && !result.Value) return;
+
+        try
+        {
+            await AuthClient.RemoveTvShowAsync(tvShow.Id);
+            _tvShows.Remove(tvShow);
+            Toastr.Add("Removed the tv show!", Severity.Success);
+        }
+        catch (ApiException ex)
+        {
+            var errors = await ex.GetContentAsAsync<Dictionary<String, String>>();
+            var sb = new StringBuilder();
+            foreach (var item in errors)
+            {
+                sb.AppendLine(item.Value);
+            }
+
+            Toastr.Add(sb.ToString(), Severity.Error);
+        }
+    }
+
+    public async Task HasNextEpisodeChanged()
+    {
+        _params.HasNextEpisode = !_params.HasNextEpisode;
+        await GetShows();
+    }
+
+    private async Task GetShows()
+    {
+        _tvShows = (await AuthClient.GetMyShowsAsync(_params)).ToList();
+    }
+
+    void IDisposable.Dispose() => AddTvShowDialog.OnShowAdded -= (async (name) => await OnShowAdded(name));
+}

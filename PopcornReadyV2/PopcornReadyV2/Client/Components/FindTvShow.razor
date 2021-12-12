@@ -1,0 +1,41 @@
+﻿@inject IPopcornAuthClient AuthClient
+@inject ISnackbar Toastr
+@inject IDialogService DialogService
+
+<form @onsubmit="Search">
+    <MudTextField Style="@($"color:{_theme.Palette.White};width:400px")" Placeholder="What show should we track now?" Adornment="Adornment.Start"
+                  AdornmentColor="Color.Inherit" AdornmentIcon="@Icons.Material.Filled.Search" @bind-Value="_title" />
+</form>
+
+@code {
+    private string _title;
+    private TvShowResponse _tvShowToAdd;
+    private MudTheme _theme = new MudTheme();
+
+    public async Task Search()
+    {
+        if (string.IsNullOrWhiteSpace(_title)) return;
+
+        _tvShowToAdd = (await AuthClient.GetTvShowAsync(_title)).Content;
+
+        if (_tvShowToAdd == null)
+        {
+            Toastr.Add($"Could not find {_title}, try searching for another one!", Severity.Error);
+            return;
+        }
+
+        _title = string.Empty;
+        OpenSaveDialog();
+    }
+
+    private void OpenSaveDialog()
+    {
+        var dialogParams = new DialogParameters
+    {
+            {nameof(AddTvShowDialog.TvShow), _tvShowToAdd }
+        };
+
+        DialogService.Show<AddTvShowDialog>("Save Tv Show", dialogParams, new DialogOptions { CloseButton = true });
+        _tvShowToAdd = null;
+    }
+}

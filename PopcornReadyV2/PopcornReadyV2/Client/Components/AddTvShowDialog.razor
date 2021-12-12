@@ -1,0 +1,56 @@
+﻿@inject IPopcornAuthClient AuthClient
+@inject ISnackbar Toastr
+@inject NavigationManager Nav
+
+<MudCard>
+    <MudCardMedia Class="w-25 ml-2" Image="@TvShow.ImageUrl" />
+    <MudCardHeader>
+        <MudText Typo="Typo.h5">@TvShow.Name</MudText>
+        <MudLink Href="@TvShow.DescriptionUrl">
+            <MudText>@TvShow.Description</MudText>
+        </MudLink>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudText Typo="@Typo.h6">Status: @TvShow.Status</MudText>
+        <MudLink Href="@TvShow.Url" Target="_blank">Episodate</MudLink>
+        @if (TvShow.NextEpisode != null)
+        {
+            <MudText Typo="Typo.h6">Next Episode</MudText>
+            <MudText>@TvShow.NextEpisode.Name</MudText>
+            <MudText>S@(TvShow.NextEpisode.Season) E@(TvShow.NextEpisode.Number)</MudText>
+            <MudText>Airdate: @TvShow.NextEpisode.AirDate.ToLocalTime()</MudText>
+        }
+    </MudCardContent>
+    <MudCardActions>
+        <MudIconButton @onclick="async () => await SaveShow()" Color="@Color.Primary" Variant="@Variant.Filled" Size="Size.Large" Icon="@Icons.Material.Filled.LibraryAdd"></MudIconButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+    [Parameter] public TvShowResponse TvShow { get; set; }
+
+    [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
+
+    public async Task SaveShow()
+    {
+        var result = await AuthClient.AddTvShowAsync(TvShow.Name);
+        if (!result.IsSuccessStatusCode)
+        {
+            Toastr.Add(result.Error.Content, Severity.Error);
+        }
+        else
+        {
+            OnShowAdded?.Invoke(TvShow.Name);
+            // TODO: real state management
+            Toastr.Add("Added a new tv show! Click to go to your shows", Severity.Success, opt => opt.Onclick = (_) =>
+            {
+                Nav.NavigateTo("/my-shows", true);
+                return Task.CompletedTask;
+            });
+
+            MudDialog.Close();
+        }
+    }
+
+    public static event Action<string> OnShowAdded;
+}

@@ -1,0 +1,10 @@
+﻿<MudNavMenu>
+            <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Filled.Home">Home</MudNavLink>
+            <MudNavLink Href="counter">Counter</MudNavLink>
+            <AuthorizeView>
+                <Authorized>
+                    <MudNavLink Href="fetchdata">Fetch Data</MudNavLink>
+                    <MudNavLink Href="/my-shows">My Shows</MudNavLink>
+                </Authorized>
+            </AuthorizeView>
+</MudNavMenu>

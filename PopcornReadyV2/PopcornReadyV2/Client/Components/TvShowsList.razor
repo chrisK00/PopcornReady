@@ -1,0 +1,85 @@
+﻿@inject IPopcornAuthClient AuthClient
+@inject ISnackbar Toastr
+@inject IPopcornUnAuthClient UnAuthClient
+@inject NavigationManager Nav
+
+<MudTable Striped="true" Hover="true" Items="_tvShows">
+    <ToolBarContent>
+        <MudCheckBox T="bool" @onclick="async () => await HasNextEpisodeChanged()">Next episode?</MudCheckBox>
+        <MudSpacer />
+        <MudTextField TextChanged="async () => await GetShows()" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" @bind-Value="_params.Title"></MudTextField>
+        <MudButton @onclick="ClearParams">Clear</MudButton>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh></MudTh>
+        <MudTh>Show</MudTh>
+        <MudTh>Status</MudTh>
+        <MudTh>Next Episode</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd><MudLink Href="@context.Url"><img class="w-25" src="@context.ImageUrl" alt="@context.Name" /></MudLink></MudTd>
+        <MudTd><MudLink Href="@context.Url"></MudLink>@context.Name</MudTd>
+        <MudTd>@context.Status</MudTd>
+        <MudTd>
+            @if (context.NextEpisode != null)
+            {
+                <span>
+                    @context.NextEpisode.Name: @context.NextEpisode.AirDate.ToLocalTime().ToShortDateString() - @{
+                        var time = context.NextEpisode.AirDate - DateTime.Now;
+                    }@time.Days days
+                </span>
+            }
+        </MudTd>
+        <MudTd>
+            <AuthorizeView>
+                <Authorized Context="auth">
+                    <MudIconButton Icon="@Icons.Material.Filled.Favorite" @onclick="async () => await LikeTvShow(context.Name)"></MudIconButton>
+                </Authorized>
+            </AuthorizeView>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+    private IEnumerable<TvShowResponse> _tvShows;
+
+    private TvShowParams _params = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        await GetShows();
+    }
+
+    public void ClearParams()
+    {
+        _params = new();
+    }
+
+    public async Task HasNextEpisodeChanged()
+    {
+        _params.HasNextEpisode = !_params.HasNextEpisode;
+        await GetShows();
+    }
+
+    private async Task GetShows()
+    {
+        _tvShows = await UnAuthClient.GetTvShowsAsync(_params);
+    }
+
+    public async Task LikeTvShow(string title)
+    {
+        var result = await AuthClient.AddTvShowAsync(title);
+        if (!result.IsSuccessStatusCode)
+        {
+            Toastr.Add(result.Error.Content, Severity.Error);
+            return;
+        }
+
+        Toastr.Add("Added a new tv show! Click to visit your list", Severity.Success, opt => opt.Onclick = (_) =>
+        {
+            Nav.NavigateTo("/my-shows", true);
+            return Task.CompletedTask;
+        });
+    }
+}
